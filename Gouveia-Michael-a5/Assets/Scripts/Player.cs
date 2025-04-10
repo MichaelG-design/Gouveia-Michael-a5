@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameManager gameManager;
 
+    //yoyoyo its michael
 
     private void Update()
     {
