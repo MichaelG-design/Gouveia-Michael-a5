@@ -2,22 +2,29 @@ using UnityEngine;
 
 public class TeleportPlayer : MonoBehaviour
 {
-    public GameObject playerShip; // Reference to the PlayerShip GameObject
+    public GameObject playerShip;
+    public GameObject cooldownIndicator; 
 
-    private Player playerScript;  // Reference to the Player script
+    private Player playerScript;
 
-    private float teleportCooldown = 1f; // 1 second cooldown
-    private float lastTeleportTime = -Mathf.Infinity; // Time of last teleport
+    private float teleportCooldown = 1f;
+    private float lastTeleportTime = -Mathf.Infinity;
 
     void Start()
     {
         playerScript = playerShip.GetComponent<Player>();
+        cooldownIndicator.SetActive(false); // Hide at start
     }
 
     void Update()
     {
-        // Only teleport if cooldown has passed
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time >= lastTeleportTime + teleportCooldown)
+        bool canTeleport = Time.time >= lastTeleportTime + teleportCooldown;
+
+        // Show or hide the indicator based on cooldown
+        cooldownIndicator.SetActive(!canTeleport);
+
+        // Check for teleport input
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canTeleport) //Teleports when 'LeftShift' is pressed
         {
             Teleport();
             lastTeleportTime = Time.time;
@@ -27,6 +34,6 @@ public class TeleportPlayer : MonoBehaviour
     void Teleport()
     {
         Vector3 direction = playerShip.transform.up;
-        playerShip.transform.position += direction * 5f;
+        playerShip.transform.position += direction * 5f; //Teleports player 5 spaces in direction they are facing
     }
 }
