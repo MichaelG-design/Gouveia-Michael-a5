@@ -2,31 +2,31 @@ using UnityEngine;
 
 public class TeleportPlayer : MonoBehaviour
 {
-    public GameObject playerShip; // Reference to the PlayerShip GameObject (the one with the Player script)
+    public GameObject playerShip; // Reference to the PlayerShip GameObject
 
-    private Player playerScript; // Reference to the Player script (the one you just shared)
+    private Player playerScript;  // Reference to the Player script
+
+    private float teleportCooldown = 1f; // 1 second cooldown
+    private float lastTeleportTime = -Mathf.Infinity; // Time of last teleport
 
     void Start()
     {
-        // Get the Player script attached to the playerShip
         playerScript = playerShip.GetComponent<Player>();
     }
 
     void Update()
     {
-        // Check if the "S" key is pressed
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        // Only teleport if cooldown has passed
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time >= lastTeleportTime + teleportCooldown)
         {
             Teleport();
+            lastTeleportTime = Time.time;
         }
     }
 
     void Teleport()
     {
-        // Get the direction the player is facing (up direction of the transform)
         Vector3 direction = playerShip.transform.up;
-
-        // Teleport the player by 5 units in the direction the player is facing
         playerShip.transform.position += direction * 5f;
     }
 }
